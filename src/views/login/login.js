@@ -142,6 +142,11 @@ export default function Login(props) {
                         >
                             {  'Login'}
                         </Button>
+                        <Button
+                            href="registration" className={styles.tombolLogin}
+                        >
+                            {  'Daftar'}
+                        </Button>
                     </div>
                 </Col>
             </Row>

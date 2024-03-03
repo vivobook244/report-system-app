@@ -24,6 +24,19 @@ body {
   margin-top: 10%;
   padding: 2%;
 }
+
+.BoxRegister {
+  background-color: #f5f6f8;
+  width: 23%;
+  height: max-content;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px #3f2153;
+  position: absolute;
+  margin-top: 1%;
+  padding: 2%;
+}
+
+
 .tulisanLogin {
   font-size: 50px;
   color: #3f2153;

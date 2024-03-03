@@ -20,6 +20,7 @@ const SendReportUser = React.lazy( ()=> import('../views/sendReportUser/sendRepo
 const DashboardAdministrator = React.lazy( ()=> import('../views/dashboard_administrator/dashboard') )
 const Users = React.lazy( ()=> import('../views/users/users') )
 const Logout = React.lazy( ()=> import('../views/logout/logout'  ) )
+const RegisterStudent = React.lazy( ()=> import('../views/register_students/register_students')  )
 
 
 const coreRoutes = [
@@ -36,6 +37,7 @@ const coreRoutes = [
     // { path: '/home_administrator', exact: true, name : 'DashboardAdministrator', component: DashboardAdministrator },
     { path: '/users', exact: true, name : 'Users', component: Users },
     { path: '/logout', exact: false, name: 'logout', component: Logout },
+    { path: '/registration', exact: false, name: 'registration', component: RegisterStudent },
 
     
 ]
