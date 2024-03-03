@@ -1,0 +1,57 @@
+@font-face {
+  font-family: Jaldi;
+  src: url(Jaldi-Regular.ttf);
+}
+@font-face {
+  font-family: Inter;
+  src: url(Inter-Medium.ttf);
+}
+
+body {
+  /* background-color: #3f2153; */
+  background-image: url(Log\ In\ Utama3.jpg);
+  background-size: auto;
+  background-repeat: no-repeat;
+  position: relaitif;
+}
+.BoxLogin {
+  background-color: #f5f6f8;
+  width: 23%;
+  height: max-content;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px #3f2153;
+  position: absolute;
+  margin-top: 10%;
+  padding: 2%;
+}
+.tulisanLogin {
+  font-size: 50px;
+  color: #3f2153;
+  font-family: "Jaldi";
+}
+
+.tombolLogin {
+  background-color: #3f2153;
+  color: white;
+  padding: 11px;
+  width: 100%;
+  display: flex;
+  margin-top: 30px;
+  font-family: "Inter";
+  justify-content: center;
+  margin-bottom: 0px;
+  border: none;
+}
+
+.tombolLogin:hover {
+  background-color: rgb(106, 48, 145);
+}
+.blockmenu {
+  min-height: 520px;
+}
+
+.showComment {
+  resize: none;
+  height: 500px;
+  min-width: 1200px;
+}

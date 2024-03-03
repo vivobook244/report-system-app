@@ -1,0 +1,20 @@
+.textMenu{
+    color: white;
+    font-size: 18px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.welcomeText{
+    color:#FFCB42;
+    font-size: 90px;
+    text-align: left;
+    line-height: 70px;
+    font-weight: 900;
+}
+.textWelcomebelow{
+    color:white;
+    font-size: 30px;
+    text-align: left;
+    font-weight: 500;
+    line-height: 30px;
+}
