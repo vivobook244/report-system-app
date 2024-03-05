@@ -12,7 +12,7 @@ import { retrieveData } from '../../localStorage'
 import FailedAuthModal from "../../assets/component/failedAuthModal";
 
 
-export default function Users(props) {
+export default function Dosen(props) {
 
     const [open, setOpen] = useState(false);
     const [show, setShow] = useState(false);
@@ -53,7 +53,6 @@ export default function Users(props) {
     const [fullname, setFullname] = useState("");
     const [angkatan, setAngkatan] = useState("");
     const [konsentrasi, setKonsentrasi] = useState("");
-    const [policy, setPolicy] = useState("");
     const [cat, setCat] = useState("");
     const [status, setStatus] = useState("");
 
@@ -83,12 +82,6 @@ export default function Users(props) {
         event.persist();
         let value = event.target.value
         setAngkatan(value);
-    }
-
-    const handlePolicy = (event) => {
-        event.persist();
-        let value = event.target.value
-        setPolicy(value);
     }
 
     const handleCat = (event) => {
@@ -124,7 +117,7 @@ export default function Users(props) {
                 password: password,
                 angkatan: angkatan,
                 konsentrasi: konsentrasi,
-                policy: policy,
+                policy: "mahasiswa",
                 cat: cat,
                 status: status,
                 is_active: true,
@@ -141,19 +134,19 @@ export default function Users(props) {
                 setShowModal(true)
                 setErrorMessage(res.data.message)
                 setLoading(false)
-                document.getElementById("create_user").reset()
+                
             } else if (res.data.Code === 201) {
                 setLoading(false)
                 setShowModal(true)
                 setErrorMessage(res.data.message)
                 handleClose()
-                document.getElementById("create_user").reset()
+                
             }else if (res.data.Code === 409) {
                 setLoading(false)
                 setShowModal(true)
                 setErrorMessage(res.data.message)
                 handleClose()
-                document.getElementById("create_user").reset()
+                
             }
         }).catch(error => {
             setLoading(false)
@@ -161,7 +154,7 @@ export default function Users(props) {
             console.log("error sign in")
             setShowModal(true)
             setErrorMessage(error.code)
-            document.getElementById("create_user").reset()
+            
 
         })
 
@@ -250,7 +243,6 @@ export default function Users(props) {
                 password: password,
                 angkatan: angkatan,
                 konsentrasi: konsentrasi,
-                policy: policy,
                 cat: cat,
                 status: status
             },
@@ -265,13 +257,13 @@ export default function Users(props) {
                     setErrorMessage(res.data.message)
                     setLoading(false)
                     handleClose3()
-                    document.getElementById("update_user").reset()
+                    
                 } else if (res.data.Code === 201) {
                     setLoading(false)
                     setShowModal(true)
                     setErrorMessage(res.data.message)
                     handleClose3()
-                    document.getElementById("update_user").reset()
+                    
 
                 }
             }).catch(error => {
@@ -280,7 +272,7 @@ export default function Users(props) {
                 console.log("error sign in")
                 setShowModal(true)
                 setErrorMessage(error.code)
-                document.getElementById("create_user").reset()
+                
 
             })
     }
@@ -320,7 +312,6 @@ export default function Users(props) {
                 setPassword(chooseid2.password)
                 setAngkatan(chooseid2.angkatan)
                 setKonsentrasi(chooseid2.konsentrasi)
-                setPolicy(chooseid2.policy)
                 setCat(chooseid2.cat)
                 setStatus(chooseid2.status)
                 handleShow3()
@@ -356,7 +347,7 @@ export default function Users(props) {
                 keyboard={true}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Menambahkan User Baru</Modal.Title>
+                    <Modal.Title>Menambahkan Dosen Baru</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form id="create_user">
@@ -395,15 +386,6 @@ export default function Users(props) {
                                 <option value="2026" >2026</option>
                             </Form.Select>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="selectPolicyusers1">
-                            <Form.Label>Pilih  Usertipe</Form.Label>
-                            <Form.Select onChange={handlePolicy} value={policy} aria-label="Default select example">
-                                <option>Usertipe</option>
-                                <option value="mahasiswa">mahasiswa</option>
-                                <option value="koordinator">koordinator</option>
-                            </Form.Select>
-                        </Form.Group>
-
                         <Form.Group className="mb-3" controlId="selectPolicyusers2">
                             <Form.Label>Pilih Konsentrasi</Form.Label>
                             <Form.Select onChange={handleKonsentrasi} value={konsentrasi} aria-label="Default select example">
@@ -465,7 +447,6 @@ export default function Users(props) {
                     setPassword("")
                     setAngkatan("")
                     setKonsentrasi("")
-                    setPolicy("")
                     setCat("")
                     setStatus("")
                 }}
@@ -473,7 +454,7 @@ export default function Users(props) {
                 keyboard={true}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Editing User</Modal.Title>
+                    <Modal.Title>Edit Dosen</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form id="update_user">
@@ -512,15 +493,6 @@ export default function Users(props) {
                                 <option value="2026" >2026</option>
                             </Form.Select>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="selectPolicyusers1">
-                            <Form.Label>Pilih Usertype</Form.Label>
-                            <Form.Select onChange={handlePolicy} defaultValue={policy} aria-label="Default select example">
-                                <option value="N/A" >Pilih Usertype</option>
-                                <option value="mahasiswa">mahasiswa</option>
-                                <option value="koordinator">koordinator</option>
-                            </Form.Select>
-                        </Form.Group>
-
                         <Form.Group className="mb-3" controlId="selectPolicyusers2">
                             <Form.Label>Konsentrasi</Form.Label>
                             <Form.Select onChange={handleKonsentrasi} defaultValue={konsentrasi} aria-label="Default select example">
@@ -630,7 +602,7 @@ export default function Users(props) {
             <Navbar>
                 <Container className="mx-4 my-10">
                     <Navbar.Brand className="fs-2 fw-semibold">
-                        Users
+                        Dosen
                     </Navbar.Brand>
                 </Container>
             </Navbar>
@@ -696,7 +668,7 @@ export default function Users(props) {
 
                         >
                             <Button  className="btn btn-primary" onClick={handleShow} >
-                                Tambah User Baru 
+                                Tambah Dosen
                             </Button>
                             
                             <Button className="btn btn-warning mx-4" onClick={handleShow4}>
@@ -711,6 +683,7 @@ export default function Users(props) {
                                         <th>Angkatan</th>
                                         <th>Konsentrasi</th>
                                         <th>Kategori</th>
+                                        <th>Judul Penelitian</th>
                                         <th>Status pengguna</th>
                                         <th>Status Laporan</th>
                                         <th>Opsi</th>
@@ -732,6 +705,7 @@ export default function Users(props) {
                                                     <td>{user.angkatan}</td>
                                                     <td>{user.konsentrasi}</td>
                                                     <td>{user.cat}</td>
+                                                    <td>{user.judul_penelitian}</td>
                                                     <td>{user.is_active ? "aktif" : "non-aktif"}</td>
                                                     <td>{user.status}</td>
                                                     <td>
@@ -749,10 +723,10 @@ export default function Users(props) {
                                                             }} >
                                                                  <span className="fs-6" >Hapus</span>
                                                             </Button>
-                                                            <Button variant="success" onClick={() => {
-                                                                setChooseid(user)
+                                                            <Button variant={user.is_active ? "secondary" : "success"} onClick={() => {
+                                                                
                                                             }} >
-                                                                 <span className="fs-6" >Aktifkan</span>
+                                                                 <span className="fs-6" >{user.is_active ? "non-aktifkan" : "aktifkan"}</span>
                                                             </Button>
                                                         </Stack>
                                                     </td>

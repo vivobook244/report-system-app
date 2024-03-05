@@ -18,9 +18,10 @@ const Login = React.lazy(() => import('../views/login/login'))
 const Dashboard = React.lazy( ()=> import('../views/dashboard_user/dashboard') )
 const SendReportUser = React.lazy( ()=> import('../views/sendReportUser/sendReportUser')  )
 const DashboardAdministrator = React.lazy( ()=> import('../views/dashboard_administrator/dashboard') )
-const Users = React.lazy( ()=> import('../views/users/users') )
+const Mahasiswa = React.lazy( ()=> import('../views/mahasiswa/mahasiswa') )
 const Logout = React.lazy( ()=> import('../views/logout/logout'  ) )
 const RegisterStudent = React.lazy( ()=> import('../views/register_students/register_students')  )
+const Dosen = React.lazy( () => import('../views/dosen/dosen') )
 
 
 const coreRoutes = [
@@ -35,9 +36,10 @@ const coreRoutes = [
     { path: '/home', exact: true, name : 'DashboardUser', component: Dashboard },
     { path: '/send_report', exact: true, name : 'SendReportUser', component: SendReportUser },
     // { path: '/home_administrator', exact: true, name : 'DashboardAdministrator', component: DashboardAdministrator },
-    { path: '/users', exact: true, name : 'Users', component: Users },
+    { path: '/mahasiswa', exact: true, name : 'Mahasiswa', component: Mahasiswa },
     { path: '/logout', exact: false, name: 'logout', component: Logout },
     { path: '/registration', exact: false, name: 'registration', component: RegisterStudent },
+    { path: '/dosen', exact: false, name: 'dosen', component: Dosen },
 
     
 ]

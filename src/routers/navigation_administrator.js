@@ -13,8 +13,13 @@ export default [
         icon: faGauge,
     },
     {   
-        name: 'Users',
-        to: '/users',
+        name: 'Students',
+        to: '/Mahasiswa',
+        icon: faGauge,
+    },
+    {   
+        name: 'Dosen',
+        to: '/dosen',
         icon: faGauge,
     },
     {   

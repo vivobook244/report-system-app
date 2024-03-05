@@ -15,12 +15,13 @@ export default function RegisterStudents(props) {
     const [angkatan, setAngkatan] = useState("");
     const [konsentrasi, setKonsentrasi] = useState("");
     const [cat, setCat] = useState("");
+    const [judul, setJudul] = useState("");
 
-    const handleClose = () =>{ 
-        setShowModal(false) 
+    const handleClose = () => {
+        setShowModal(false)
         handleReset()
-    };  
-    const handleShow = () =>setShowModal(true) ;
+    };
+    const handleShow = () => setShowModal(true);
 
     const handleButtonSave = () => {
         setLoading(true)
@@ -34,6 +35,7 @@ export default function RegisterStudents(props) {
                 konsentrasi: konsentrasi,
                 policy: "mahasiswa",
                 cat: cat,
+                judul_penelitian: judul,
                 status: "N/A",
                 is_active: false,
                 is_remove: false
@@ -43,23 +45,23 @@ export default function RegisterStudents(props) {
                 setLoading(false)
                 handleShow()
                 setErrorMessage(res.data.message)
-               
+
             } else if (res.data.Code === 409) {
                 setLoading(false)
                 handleShow()
                 setErrorMessage(res.data.message)
-               
-            }  else if (res.data.Code === 401) {
+
+            } else if (res.data.Code === 401) {
                 setLoading(false)
                 handleShow()
                 setErrorMessage(res.data.message)
-               
+
             }
         }).catch(error => {
             setLoading(false)
             handleShow()
             setErrorMessage(error.code)
-           
+
 
         })
     };
@@ -101,7 +103,13 @@ export default function RegisterStudents(props) {
         setKonsentrasi(value);
     }
 
-    const handleReset = () =>{
+    const handleJudul = (event) => {
+        event.persist();
+        let value = event.target.value
+        setJudul(value);
+    }
+
+    const handleReset = () => {
         setUsername("");
         setPassword("");
         setFullname("");
@@ -110,7 +118,7 @@ export default function RegisterStudents(props) {
         setCat("");
     }
 
- 
+
 
     return (
         <Container fluid >
@@ -179,6 +187,10 @@ export default function RegisterStudents(props) {
                                     <option value="Kerja praktek">Kerja Praktek</option>
                                     <option value="Proyek mini">Proyek mini</option>
                                 </Form.Select>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Judul Kerja Praktek/Proyek Mini</Form.Label>
+                                <Form.Control value={judul} onChange={handleJudul} as="textarea" rows={2} />
                             </Form.Group>
                             <Button
                                 href="#" className={styles.tombolLogin}
