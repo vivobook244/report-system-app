@@ -79,6 +79,10 @@ export default function Login(props) {
                 storeData("TOKEN", res.data.message.token);
                 storeData("DATAUSER", JSON.stringify(res.data.message.dataUser));
                 redirect("../home", { replace: true });
+            } else if (res.data.Code === 402) {
+                setShowModal(true)
+                setErrorMessage(res.data.message)
+                setLoading(false)
             }
         }).catch(error => {
             setLoading(false)

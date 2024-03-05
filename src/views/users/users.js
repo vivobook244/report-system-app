@@ -126,7 +126,9 @@ export default function Users(props) {
                 konsentrasi: konsentrasi,
                 policy: policy,
                 cat: cat,
-                status: status
+                status: status,
+                is_active: true,
+                is_remove: false
             },
             {
                 headers: {
@@ -233,10 +235,6 @@ export default function Users(props) {
 
     }
 
-        
-
-
-
     const updateUsers = () => {
         setLoading(true)
 
@@ -297,7 +295,7 @@ export default function Users(props) {
             console.log(identity)
             let ident = JSON.parse(identity)
             console.log(ident.type)
-            if (ident.type == "koordinator") {
+            if (ident.type == "koordinator" || ident.type == "administrator" ) {
                 setNav(navigation_administrator)
                 console.log(nav)
             }
@@ -710,11 +708,10 @@ export default function Users(props) {
                                         <th>No.</th>
                                         <th>Nama </th>
                                         <th>Username</th>
-                                        <th>Password</th>
-                                        <th>Usertype</th>
                                         <th>Angkatan</th>
                                         <th>Konsentrasi</th>
                                         <th>Kategori</th>
+                                        <th>Status pengguna</th>
                                         <th>Status Laporan</th>
                                         <th>Opsi</th>
 
@@ -732,11 +729,10 @@ export default function Users(props) {
                                                     <td>{user.id}</td>
                                                     <td>{user.fullname}</td>
                                                     <td>{user.username}</td>
-                                                    <td>{user.password}</td>
-                                                    <td>{user.policy}</td>
                                                     <td>{user.angkatan}</td>
                                                     <td>{user.konsentrasi}</td>
                                                     <td>{user.cat}</td>
+                                                    <td>{user.is_active ? "aktif" : "non-aktif"}</td>
                                                     <td>{user.status}</td>
                                                     <td>
                                                         <Stack direction="horizontal" gap={3}  >
@@ -746,12 +742,17 @@ export default function Users(props) {
 
                                                                 }
                                                             } >
-                                                                Edit
+                                                                <span className="fs-6" >Edit</span>
                                                             </Button>
                                                             <Button variant="danger" onClick={() => {
                                                                 setChooseid(user)
                                                             }} >
-                                                                Hapus
+                                                                 <span className="fs-6" >Hapus</span>
+                                                            </Button>
+                                                            <Button variant="success" onClick={() => {
+                                                                setChooseid(user)
+                                                            }} >
+                                                                 <span className="fs-6" >Aktifkan</span>
                                                             </Button>
                                                         </Stack>
                                                     </td>

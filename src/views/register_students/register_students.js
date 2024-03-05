@@ -14,29 +14,54 @@ export default function RegisterStudents(props) {
     const [fullname, setFullname] = useState("");
     const [angkatan, setAngkatan] = useState("");
     const [konsentrasi, setKonsentrasi] = useState("");
-    const [policy, setPolicy] = useState("");
     const [cat, setCat] = useState("");
-    const [status, setStatus] = useState("");
 
-    const handleButtonlogin = () => {
+    const handleClose = () =>{ 
+        setShowModal(false) 
+        handleReset()
+    };  
+    const handleShow = () =>setShowModal(true) ;
+
+    const handleButtonSave = () => {
         setLoading(true)
 
-        api.post("/auth-web",
+        api.post("/register-web",
             {
-                user: username,
-                pass: password,
-            }
+                fullname: fullname,
+                username: username,
+                password: password,
+                angkatan: angkatan,
+                konsentrasi: konsentrasi,
+                policy: "mahasiswa",
+                cat: cat,
+                status: "N/A",
+                is_active: false,
+                is_remove: false
+            },
         ).then(res => {
-
+            if (res.data.Code === 201) {
+                setLoading(false)
+                handleShow()
+                setErrorMessage(res.data.message)
+               
+            } else if (res.data.Code === 409) {
+                setLoading(false)
+                handleShow()
+                setErrorMessage(res.data.message)
+               
+            }  else if (res.data.Code === 401) {
+                setLoading(false)
+                handleShow()
+                setErrorMessage(res.data.message)
+               
+            }
         }).catch(error => {
             setLoading(false)
-            console.log(error)
-            console.log("error sign in")
-            setShowModal(true)
+            handleShow()
             setErrorMessage(error.code)
+           
+
         })
-
-
     };
 
     const handleUsername = (event) => {
@@ -76,18 +101,23 @@ export default function RegisterStudents(props) {
         setKonsentrasi(value);
     }
 
-    const handleStatus = (event) => {
-        event.persist();
-        let value = event.target.value
-        setStatus(value);
+    const handleReset = () =>{
+        setUsername("");
+        setPassword("");
+        setFullname("");
+        setAngkatan("");
+        setKonsentrasi("");
+        setCat("");
     }
+
+ 
 
     return (
         <Container fluid >
             <FailedAuthModal
 
                 show={showModal}
-                onHide={() => setShowModal(false)}
+                onHide={handleClose}
                 message={errorMessage}
 
             />
@@ -153,7 +183,7 @@ export default function RegisterStudents(props) {
                             <Button
                                 href="#" className={styles.tombolLogin}
                                 disabled={isLoading}
-                                onClick={!isLoading ? handleButtonlogin : null}
+                                onClick={!isLoading ? handleButtonSave : null}
                             >
                                 {'Simpan'}
                             </Button>

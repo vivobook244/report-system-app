@@ -168,7 +168,7 @@ export default function Dashboard(props) {
             console.log(identity)
             let ident = JSON.parse(identity)
             console.log(ident.type)
-            if (ident.type == "koordinator") {
+            if (ident.type == "koordinator" || ident.type == "administrator") {
                 setNav(navigation_administrator)
                 console.log(nav)
             }
