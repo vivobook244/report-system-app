@@ -13,7 +13,7 @@ import { Spinner } from "react-bootstrap";
 // const Leave = React.lazy(() => import('../views/leaveManagement/leaveManagement'))
 // const User = React.lazy(() => import('../views/createuser/createuser'))
 const Not_Found = React.lazy(() => import('../views/notFound/not_found'))
-// const Users = React.lazy(()=> import('../views/users/users'))
+const Users = React.lazy(()=> import('../views/users/users'))
 const Login = React.lazy(() => import('../views/login/login'))
 const Dashboard = React.lazy( ()=> import('../views/dashboard_user/dashboard') )
 const SendReportUser = React.lazy( ()=> import('../views/sendReportUser/sendReportUser')  )
@@ -25,12 +25,8 @@ const Dosen = React.lazy( () => import('../views/dosen/dosen') )
 
 
 const coreRoutes = [
-    // { path: '/home', exact: false, name: 'Home', component: Home },
-    // { path: '/recap_absent', exact: false, name: 'Recap', component: Recap },
-    // { path: '/Reset_Password', exact: false, name: 'ResetPassword', component: ResetPassword },
-    // { path: '/leave_management', exact: false, name: 'Leave', component: Leave },
-    // { path:'/create_user', exact:false, name: 'createuser', component:User },
-    // { path:'/users', exact:false, name: 'users', component:Users },
+   
+    { path:'/users', exact:false, name: 'users', component:Users },
     { path: '*', exact: false, name: 'Not_found', component: Not_Found },
     { path: '/', exact: true, name: 'Login', component: Login },
     { path: '/home', exact: true, name : 'DashboardUser', component: Dashboard },

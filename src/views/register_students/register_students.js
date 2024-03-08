@@ -116,6 +116,7 @@ export default function RegisterStudents(props) {
         setAngkatan("");
         setKonsentrasi("");
         setCat("");
+        setJudul("");
     }
 
 

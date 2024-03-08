@@ -12,7 +12,7 @@ import { retrieveData } from '../../localStorage'
 import FailedAuthModal from "../../assets/component/failedAuthModal";
 
 
-export default function Dosen(props) {
+export default function Users(props) {
 
     const [open, setOpen] = useState(false);
     const [show, setShow] = useState(false);
@@ -55,7 +55,7 @@ export default function Dosen(props) {
     const [konsentrasi, setKonsentrasi] = useState("");
     const [cat, setCat] = useState("");
     const [status, setStatus] = useState("");
-    
+
 
     let redirect = useNavigate()
 
@@ -277,6 +277,85 @@ export default function Dosen(props) {
             })
     }
 
+    const enabledUser = (id)=>{
+        setLoading(true)
+
+        const userToken = retrieveData("TOKEN")
+
+
+        api.post("/enable-user-web",
+        {
+            id:id,
+        },
+        {
+            headers: {
+                'x-auth-token': userToken
+            },
+        }).then(res => {
+            console.log(res.data)
+            if (res.data.Code === 401) {
+                setShowModal(true)
+                setErrorMessage(res.data.message)
+                setLoading(false)
+                handleClose3()
+                
+            } else if (res.data.Code === 201) {
+                setLoading(false)
+                setShowModal(true)
+                setErrorMessage(res.data.message)
+                handleClose3()
+                
+
+            }
+        }).catch(error => {
+            setLoading(false)
+            console.log(error)
+            setShowModal(true)
+            setErrorMessage(error.code)
+            
+
+        })
+    }
+    const disabledUser = (id)=>{
+        setLoading(true)
+
+        const userToken = retrieveData("TOKEN")
+
+
+        api.post("/disable-user-web",
+        {
+            id:id,
+        },
+        {
+            headers: {
+                'x-auth-token': userToken
+            },
+        }).then(res => {
+            console.log(res.data)
+            if (res.data.Code === 401) {
+                setShowModal(true)
+                setErrorMessage(res.data.message)
+                setLoading(false)
+                handleClose3()
+                
+            } else if (res.data.Code === 201) {
+                setLoading(false)
+                setShowModal(true)
+                setErrorMessage(res.data.message)
+                handleClose3()
+                
+
+            }
+        }).catch(error => {
+            setLoading(false)
+            console.log(error)
+            setShowModal(true)
+            setErrorMessage(error.code)
+            
+
+        })
+    }
+
 
     useEffect(
         () => {
@@ -347,7 +426,7 @@ export default function Dosen(props) {
                 keyboard={true}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Menambahkan Dosen Baru</Modal.Title>
+                    <Modal.Title>Menambahkan User Baru</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form id="create_user">
@@ -454,7 +533,7 @@ export default function Dosen(props) {
                 keyboard={true}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Dosen</Modal.Title>
+                    <Modal.Title>Editing User</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form id="update_user">
@@ -602,7 +681,7 @@ export default function Dosen(props) {
             <Navbar>
                 <Container className="mx-4 my-10">
                     <Navbar.Brand className="fs-2 fw-semibold">
-                        Dosen
+                        Pengguna
                     </Navbar.Brand>
                 </Container>
             </Navbar>
@@ -668,7 +747,7 @@ export default function Dosen(props) {
 
                         >
                             <Button  className="btn btn-primary" onClick={handleShow} >
-                                Tambah Dosen
+                                Tambah Pengguna 
                             </Button>
                             
                             <Button className="btn btn-warning mx-4" onClick={handleShow4}>
@@ -724,7 +803,7 @@ export default function Dosen(props) {
                                                                  <span className="fs-6" >Hapus</span>
                                                             </Button>
                                                             <Button variant={user.is_active ? "secondary" : "success"} onClick={() => {
-                                                                
+                                                                user.is_active ? disabledUser(user.id) : enabledUser(user.id)
                                                             }} >
                                                                  <span className="fs-6" >{user.is_active ? "non-aktifkan" : "aktifkan"}</span>
                                                             </Button>

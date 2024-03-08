@@ -8,12 +8,17 @@ export default [
         icon: faGauge,
     },
     {   
-        name: 'Sent Response',
+        name: 'Item Terkirim',
         to: '/send_report',
         icon: faGauge,
     },
     {   
-        name: 'Students',
+        name: 'Pengguna',
+        to: '/users',
+        icon: faGauge,
+    },
+    {   
+        name: 'Mahasiswa',
         to: '/Mahasiswa',
         icon: faGauge,
     },

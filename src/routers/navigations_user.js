@@ -8,7 +8,7 @@ export default [
         icon: faGauge,
     },
     {   
-        name: 'Sent Report',
+        name: 'Item Terkirim',
         to: '/send_report',
         icon: faGauge,
     },
