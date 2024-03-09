@@ -45,31 +45,14 @@ export default function Dosen(props) {
 
 
     const [isLoading, setLoading] = useState(false);
-    const [users, setUsers] = useState([])
+    const [dosen, setDosen] = useState([])
     const [showModal, setShowModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
     const [fullname, setFullname] = useState("");
-    const [angkatan, setAngkatan] = useState("");
     const [konsentrasi, setKonsentrasi] = useState("");
-    const [cat, setCat] = useState("");
-    const [status, setStatus] = useState("");
-    
+    const [quota,setQuota] = useState("");
 
     let redirect = useNavigate()
-
-    const handleUsername = (event) => {
-        event.persist();
-        let value = event.target.value
-        setUsername(value);
-    }
-
-    const handlePassword = (event) => {
-        event.persist();
-        let value = event.target.value
-        setPassword(value);
-    }
 
 
     const handleFullname = (event) => {
@@ -78,28 +61,16 @@ export default function Dosen(props) {
         setFullname(value);
     }
 
-    const handleAngkatan = (event) => {
-        event.persist();
-        let value = event.target.value
-        setAngkatan(value);
-    }
-
-    const handleCat = (event) => {
-        event.persist();
-        let value = event.target.value
-        setCat(value);
-    }
-
     const handleKonsentrasi = (event) => {
         event.persist();
         let value = event.target.value
         setKonsentrasi(value);
     }
 
-    const handleStatus = (event) => {
+    const handleQuota = (event) => {
         event.persist();
         let value = event.target.value
-        setStatus(value);
+        setQuota(value);
     }
 
 
@@ -110,16 +81,11 @@ export default function Dosen(props) {
 
         // return console.log( username,password,fullname,angkatan,policy,cat,status ) 
 
-        api.post("/create-data-users-web",
+        api.post("/create-data-dosen-web",
             {
                 fullname: fullname,
-                username: username,
-                password: password,
-                angkatan: angkatan,
                 konsentrasi: konsentrasi,
-                policy: "mahasiswa",
-                cat: cat,
-                status: status,
+                kuota: quota,
                 is_active: true,
                 is_remove: false
             },
@@ -200,10 +166,10 @@ export default function Dosen(props) {
     }
 
 
-    const getUser = () => {
+    const getDosen = () => {
 
         const userToken = retrieveData("TOKEN")
-        api.get("/get-data-users-web",
+        api.get("/get-data-dosen-web",
             {
                 headers: {
                     'x-auth-token': userToken
@@ -216,7 +182,7 @@ export default function Dosen(props) {
                     console.log(res.data.message)
                 } else if (res.data.Code === 201) {
                     console.log(res.data.message)
-                    setUsers(res.data.message)
+                    setDosen(res.data.message)
                 }
             }
 
@@ -239,12 +205,7 @@ export default function Dosen(props) {
             {
                 id: chooseid2.id,
                 fullname: fullname,
-                username: username,
-                password: password,
-                angkatan: angkatan,
                 konsentrasi: konsentrasi,
-                cat: cat,
-                status: status
             },
             {
                 headers: {
@@ -280,7 +241,7 @@ export default function Dosen(props) {
 
     useEffect(
         () => {
-            getUser()
+            getDosen()
             if (identity == null) {
                 redirect("../", { replace: true });
             }
@@ -308,12 +269,7 @@ export default function Dosen(props) {
             if (chooseid2 !== "") {
 
                 setFullname(chooseid2.fullname)
-                setUsername(chooseid2.username)
-                setPassword(chooseid2.password)
-                setAngkatan(chooseid2.angkatan)
                 setKonsentrasi(chooseid2.konsentrasi)
-                setCat(chooseid2.cat)
-                setStatus(chooseid2.status)
                 handleShow3()
 
             }
@@ -355,37 +311,6 @@ export default function Dosen(props) {
                             <Form.Label>Fullname</Form.Label>
                             <Form.Control onChange={handleFullname} value={fullname} type="text" placeholder="Fullname" />
                         </Form.Group>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formGridEmail">
-                                <Form.Label>Username </Form.Label>
-                                <Form.Control onChange={handleUsername} value={username} type="text" placeholder="Username" />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control onChange={handlePassword} value={password} type="password" placeholder="Password" />
-                            </Form.Group>
-                        </Row>
-                        <Form.Group className="mb-3" controlId="formGridAddress2">
-                            <Form.Label>Pilih Tahun Angkatan</Form.Label>
-                            {/* <Form.Control onChange={handleAngkatan} value={angkatan} type="text" placeholder="Angkatan" /> */}
-                            <Form.Select onChange={handleAngkatan} value={angkatan} aria-label="Default select example">
-                                <option>Angkatan</option>
-                                <option value="-" >Tidak Perlu (khusus koordinator)</option>
-                                <option value="2015" >2015</option>
-                                <option value="2016" >2016</option>
-                                <option value="2017" >2017</option>
-                                <option value="2018" >2018</option>
-                                <option value="2019" >2019</option>
-                                <option value="2020" >2020</option>
-                                <option value="2021" >2021</option>
-                                <option value="2022" >2022</option>
-                                <option value="2023" >2023</option>
-                                <option value="2024" >2024</option>
-                                <option value="2025" >2025</option>
-                                <option value="2026" >2026</option>
-                            </Form.Select>
-                        </Form.Group>
                         <Form.Group className="mb-3" controlId="selectPolicyusers2">
                             <Form.Label>Pilih Konsentrasi</Form.Label>
                             <Form.Select onChange={handleKonsentrasi} value={konsentrasi} aria-label="Default select example">
@@ -397,25 +322,15 @@ export default function Dosen(props) {
                                 <option value="-">Tidak Perlu (khusus koordinator)</option>
                             </Form.Select>
                         </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="selectPolicyusers3">
-                            <Form.Label>Pilih Katogori</Form.Label>
-                            <Form.Select onChange={handleCat} value={cat} aria-label="Default select example">
-                                <option>Kategori</option>
-                                <option value="Kerja praktek">Kerja Praktek</option>
-                                <option value="Proyek mini">Proyek mini</option>
-                                <option value="-">Tidak Perlu (khusus koordinator)</option>
-                            </Form.Select>
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="selectPolicyusers4">
-                            <Form.Label>Pilih Status Laporan</Form.Label>
-                            <Form.Select onChange={handleStatus} value={status} aria-label="Default select example">
-                                <option>Status Laporan</option>
-                                <option value="Proses Revisi">Masih Dalam Proses Revisi</option>
-                                <option value="Lulus Bersyarat">Laporan Selesai Bersyarat</option>
-                                <option value="Selesai">Laporan Selesai</option>
-                                <option value="-">Tidak Perlu (khusus koordinator)</option>
+                         <Form.Group className="mb-3" controlId="selectPolicyusers2">
+                            <Form.Label>Pilih Quota</Form.Label>
+                            <Form.Select onChange={handleQuota} value={quota} aria-label="Default select example">
+                                <option>Quota</option>
+                                <option value="2">2</option>
+                                <option value="4">4</option>
+                                <option value="8">8</option>
+                                <option value="10">10</option>
+                              
                             </Form.Select>
                         </Form.Group>
                         <Form.Label> ⚠️ | Catatan Penting : Pastikan Semua Data Terisi !</Form.Label>
@@ -443,12 +358,7 @@ export default function Dosen(props) {
                     handleClose3()
                     setChooseid2("")
                     setFullname("")
-                    setUsername("")
-                    setPassword("")
-                    setAngkatan("")
                     setKonsentrasi("")
-                    setCat("")
-                    setStatus("")
                 }}
                 backdrop="static"
                 keyboard={true}
@@ -462,37 +372,7 @@ export default function Dosen(props) {
                             <Form.Label>Fullname</Form.Label>
                             <Form.Control onChange={handleFullname} value={fullname} type="text" placeholder="Fullname" />
                         </Form.Group>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formGridEmail">
-                                <Form.Label>Username</Form.Label>
-                                <Form.Control onChange={handleUsername} value={username} type="text" placeholder="Username" />
-                            </Form.Group>
 
-                            <Form.Group as={Col} controlId="formGridPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control onChange={handlePassword} value={password} type="password" placeholder="Password" />
-                            </Form.Group>
-                        </Row>
-                        <Form.Group className="mb-3" controlId="formGridAddress2">
-                            <Form.Label>Angkatan</Form.Label>
-                            {/* <Form.Control onChange={handleAngkatan} value={angkatan} type="text" placeholder="Angkatan" /> */}
-                            <Form.Select onChange={handleAngkatan} value={angkatan} aria-label="Default select example">
-                                <option value="N/A" >Pilih Tahun Angkatan</option>
-                                <option value="-" >Tidak Perlu (khusus koordinator)</option>
-                                <option value="2015" >2015</option>
-                                <option value="2016" >2016</option>
-                                <option value="2017" >2017</option>
-                                <option value="2018" >2018</option>
-                                <option value="2019" >2019</option>
-                                <option value="2020" >2020</option>
-                                <option value="2021" >2021</option>
-                                <option value="2022" >2022</option>
-                                <option value="2023" >2023</option>
-                                <option value="2024" >2024</option>
-                                <option value="2025" >2025</option>
-                                <option value="2026" >2026</option>
-                            </Form.Select>
-                        </Form.Group>
                         <Form.Group className="mb-3" controlId="selectPolicyusers2">
                             <Form.Label>Konsentrasi</Form.Label>
                             <Form.Select onChange={handleKonsentrasi} defaultValue={konsentrasi} aria-label="Default select example">
@@ -501,27 +381,6 @@ export default function Dosen(props) {
                                 <option value="Elektronika instrumentasi">Elektronika instrumentasi</option>
                                 <option value="Telekomunikasi">Telekomunikasi</option>
                                 <option value="Komputer">Komputer</option>
-                                <option value="-">Tidak Perlu (khusus koordinator)</option>
-                            </Form.Select>
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="selectPolicyusers3">
-                            <Form.Label>Kategori</Form.Label>
-                            <Form.Select onChange={handleCat} defaultValue={cat} aria-label="Default select example">
-                                <option value="N/A" >Kerja praktek/Proyek mini</option>
-                                <option value="Kerja praktek">Kerja Praktek</option>
-                                <option value="Proyek mini">Proyek mini</option>
-                                <option value="-">Tidak Perlu (khusus koordinator)</option>
-                            </Form.Select>
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="selectPolicyusers4">
-                            <Form.Label>Pilih Status Laporan</Form.Label>
-                            <Form.Select onChange={handleStatus} defaultValue={status} aria-label="Default select example">
-                                <option value="N/A" >Status Laporan</option>
-                                <option value="Proses Revisi">Masih Dalam Proses Revisi</option>
-                                <option value="Lulus Bersyarat">Laporan Selesai Bersyarat</option>
-                                <option value="Selesai">Laporan Selesai</option>
                                 <option value="-">Tidak Perlu (khusus koordinator)</option>
                             </Form.Select>
                         </Form.Group>
@@ -547,58 +406,47 @@ export default function Dosen(props) {
 
             {/* Panduan dalam mengisi table */}
             <ModalDialog>
-            
-            {/* adding modal */}
-            <Modal
-                show={show4}
-                onHide={handleClose4}
-                backdrop="static"
-                keyboard={true}
-            >
-                <Modal.Header >
-                    <Modal.Title>Panduan Tabel 💡</Modal.Title>
-                </Modal.Header>
+                <Modal
+                    show={show4}
+                    onHide={handleClose4}
+                    backdrop="static"
+                    keyboard={true}
+                >
+                    <Modal.Header >
+                        <Modal.Title>Panduan Tabel 💡</Modal.Title>
+                    </Modal.Header>
 
-                <Modal.Body>
-                    <Form id="panduan_user"></Form>
-                    <Alert variant="success">
-                        <Alert.Heading>
-                        🏆 Aturan Tabel 
-                        </Alert.Heading>
-                        <hr></hr>
-                        <ol>
-                            <li></li>
-                        </ol>
+                    <Modal.Body>
+                        <Form id="panduan_user"></Form>
+                        <Alert variant="success">
+                            <Alert.Heading>
+                            🏆 Aturan Tabel 
+                            </Alert.Heading>
+                            <hr></hr>
+                            <ol>
+                                <li></li>
+                            </ol>
+                            </Alert>
+                        <Alert variant="danger">
+                            <Alert.Heading className="mb-0">
+                                🔥 Awas!!
+                            </Alert.Heading>
+                            <hr></hr>
+                            <p className="mt-0">
+                            <ol>
+                                <li>Mengubah/Edit "username" pada tabel berdampak pada pesan </li>
+                            </ol>
+                            </p>
                         </Alert>
-                    <Alert variant="danger">
-                        <Alert.Heading className="mb-0">
-                            🔥 Awas!!
-                        </Alert.Heading>
-                        <hr></hr>
-                        <p className="mt-0">
-                        <ol>
-                            <li>Mengubah/Edit "username" pada tabel berdampak pada pesan </li>
-                        </ol>
-                        </p>
-                    </Alert>
-                </Modal.Body>
-                <br></br>
-                <Modal.Footer>
-                    <Button variant="success" onClick={handleClose4}>
-                        Saya Mengerti
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                    </Modal.Body>
+                    <br></br>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={handleClose4}>
+                            Saya Mengerti
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </ModalDialog>
-
-
-
-            {/* <Row>
-                <Col className="bg-light pt-3 mb-1" >
-                    <p className="text-start fs-3 fw-2" > users </p>
-                </Col>
-            </Row> */}
-            
             <Navbar>
                 <Container className="mx-4 my-10">
                     <Navbar.Brand className="fs-2 fw-semibold">
@@ -679,58 +527,22 @@ export default function Dosen(props) {
                                     <tr>
                                         <th>No.</th>
                                         <th>Nama </th>
-                                        <th>Username</th>
-                                        <th>Angkatan</th>
                                         <th>Konsentrasi</th>
-                                        <th>Kategori</th>
-                                        <th>Judul Penelitian</th>
-                                        <th>Status pengguna</th>
-                                        <th>Status Laporan</th>
+                                        <th>Quota</th>
+                                        <th>Sisa Quota</th>
                                         <th>Opsi</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
-                                        // console.log(
-                                        //     Array.isArray(users)
-                                        // )
-
-                                        users.map(
-                                            (user, index) => {
+                                        dosen.map(
+                                            (item, index) => {
                                                 return <tr key={index} >
-                                                    <td>{user.id}</td>
-                                                    <td>{user.fullname}</td>
-                                                    <td>{user.username}</td>
-                                                    <td>{user.angkatan}</td>
-                                                    <td>{user.konsentrasi}</td>
-                                                    <td>{user.cat}</td>
-                                                    <td>{user.judul_penelitian}</td>
-                                                    <td>{user.is_active ? "aktif" : "non-aktif"}</td>
-                                                    <td>{user.status}</td>
-                                                    <td>
-                                                        <Stack direction="horizontal" gap={3}  >
-                                                            <Button variant="primary" onClick={
-                                                                () => {
-                                                                    setChooseid2(user)
-
-                                                                }
-                                                            } >
-                                                                <span className="fs-6" >Edit</span>
-                                                            </Button>
-                                                            <Button variant="danger" onClick={() => {
-                                                                setChooseid(user)
-                                                            }} >
-                                                                 <span className="fs-6" >Hapus</span>
-                                                            </Button>
-                                                            <Button variant={user.is_active ? "secondary" : "success"} onClick={() => {
-                                                                
-                                                            }} >
-                                                                 <span className="fs-6" >{user.is_active ? "non-aktifkan" : "aktifkan"}</span>
-                                                            </Button>
-                                                        </Stack>
-                                                    </td>
-
+                                                    <td>{item.id}</td>
+                                                    <td>{item.fullname}</td>
+                                                    <td>{item.konsentrasi}</td>
+                                                    <td>{item.kuota}</td>
                                                 </tr>
                                             }
                                         )

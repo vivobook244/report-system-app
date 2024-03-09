@@ -19,7 +19,7 @@ export default function Users(props) {
 
     const [show3, setShow3] = useState(false);
 
-
+    const [judul, setJudul] = useState("");
     const [show2, setShow2] = useState(false);
 
     const [nav, setNav] = useState("")
@@ -55,6 +55,7 @@ export default function Users(props) {
     const [konsentrasi, setKonsentrasi] = useState("");
     const [cat, setCat] = useState("");
     const [status, setStatus] = useState("");
+    const [policy, setPolicy] = useState("");
 
 
     let redirect = useNavigate()
@@ -65,12 +66,23 @@ export default function Users(props) {
         setUsername(value);
     }
 
+    const handleJudul = (event) => {
+        event.persist();
+        let value = event.target.value
+        setJudul(value);
+    }
+
     const handlePassword = (event) => {
         event.persist();
         let value = event.target.value
         setPassword(value);
     }
 
+    const handlePolicy = (event) => {
+        event.persist();
+        let value = event.target.value
+        setPolicy(value);
+    }
 
     const handleFullname = (event) => {
         event.persist();
@@ -117,7 +129,8 @@ export default function Users(props) {
                 password: password,
                 angkatan: angkatan,
                 konsentrasi: konsentrasi,
-                policy: "mahasiswa",
+                judul_penelitian: judul,
+                policy: policy,
                 cat: cat,
                 status: status,
                 is_active: true,
@@ -391,6 +404,7 @@ export default function Users(props) {
                 setPassword(chooseid2.password)
                 setAngkatan(chooseid2.angkatan)
                 setKonsentrasi(chooseid2.konsentrasi)
+                setPolicy(chooseid2.policy)
                 setCat(chooseid2.cat)
                 setStatus(chooseid2.status)
                 handleShow3()
@@ -426,12 +440,12 @@ export default function Users(props) {
                 keyboard={true}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Menambahkan User Baru</Modal.Title>
+                    <Modal.Title>Menambahkan Pengguna Baru</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form id="create_user">
                         <Form.Group className="mb-3" >
-                            <Form.Label>Fullname</Form.Label>
+                            <Form.Label>Nama Lengkap</Form.Label>
                             <Form.Control onChange={handleFullname} value={fullname} type="text" placeholder="Fullname" />
                         </Form.Group>
                         <Row className="mb-3">
@@ -445,6 +459,15 @@ export default function Users(props) {
                                 <Form.Control onChange={handlePassword} value={password} type="password" placeholder="Password" />
                             </Form.Group>
                         </Row>
+                        <Form.Group className="mb-3" controlId="formGridAddress2">
+                            <Form.Label>Tipe Pengguna</Form.Label>
+                            {/* <Form.Control onChange={handleAngkatan} value={angkatan} type="text" placeholder="Angkatan" /> */}
+                            <Form.Select onChange={handlePolicy} value={policy} aria-label="Default select example">
+                                <option>Tipe Pengguna</option>
+                                <option value={"mahasiswa"} >Mahasiswa</option>
+                                <option value={"koordinator"} >Koordinator</option>
+                            </Form.Select>
+                        </Form.Group>
                         <Form.Group className="mb-3" controlId="formGridAddress2">
                             <Form.Label>Pilih Tahun Angkatan</Form.Label>
                             {/* <Form.Control onChange={handleAngkatan} value={angkatan} type="text" placeholder="Angkatan" /> */}
@@ -486,7 +509,10 @@ export default function Users(props) {
                                 <option value="-">Tidak Perlu (khusus koordinator)</option>
                             </Form.Select>
                         </Form.Group>
-
+                        <Form.Group className="mb-3">
+                                <Form.Label>Judul Kerja Praktek/Proyek Mini</Form.Label>
+                                <Form.Control value={judul} onChange={handleJudul} as="textarea" rows={2} />
+                            </Form.Group>
                         <Form.Group className="mb-3" controlId="selectPolicyusers4">
                             <Form.Label>Pilih Status Laporan</Form.Label>
                             <Form.Select onChange={handleStatus} value={status} aria-label="Default select example">
@@ -552,6 +578,15 @@ export default function Users(props) {
                                 <Form.Control onChange={handlePassword} value={password} type="password" placeholder="Password" />
                             </Form.Group>
                         </Row>
+                        <Form.Group className="mb-3" controlId="formGridAddress2">
+                            <Form.Label>Tipe Pengguna</Form.Label>
+                            {/* <Form.Control onChange={handleAngkatan} value={angkatan} type="text" placeholder="Angkatan" /> */}
+                            <Form.Select onChange={handlePolicy} value={policy} aria-label="Default select example">
+                                <option>Tipe Pengguna</option>
+                                <option value={"mahasiswa"} >Mahasiswa</option>
+                                <option value={"koordinator"} >Koordinator</option>
+                            </Form.Select>
+                        </Form.Group>
                         <Form.Group className="mb-3" controlId="formGridAddress2">
                             <Form.Label>Angkatan</Form.Label>
                             {/* <Form.Control onChange={handleAngkatan} value={angkatan} type="text" placeholder="Angkatan" /> */}
@@ -626,57 +661,47 @@ export default function Users(props) {
 
             {/* Panduan dalam mengisi table */}
             <ModalDialog>
-            
-            {/* adding modal */}
-            <Modal
-                show={show4}
-                onHide={handleClose4}
-                backdrop="static"
-                keyboard={true}
-            >
-                <Modal.Header >
-                    <Modal.Title>Panduan Tabel 💡</Modal.Title>
-                </Modal.Header>
+                <Modal
+                    show={show4}
+                    onHide={handleClose4}
+                    backdrop="static"
+                    keyboard={true}
+                >
+                    <Modal.Header >
+                        <Modal.Title>Panduan Tabel 💡</Modal.Title>
+                    </Modal.Header>
 
-                <Modal.Body>
-                    <Form id="panduan_user"></Form>
-                    <Alert variant="success">
-                        <Alert.Heading>
-                        🏆 Aturan Tabel 
-                        </Alert.Heading>
-                        <hr></hr>
-                        <ol>
-                            <li></li>
-                        </ol>
+                    <Modal.Body>
+                        <Form id="panduan_user"></Form>
+                        <Alert variant="success">
+                            <Alert.Heading>
+                            🏆 Aturan Tabel 
+                            </Alert.Heading>
+                            <hr></hr>
+                            <ol>
+                                <li></li>
+                            </ol>
+                            </Alert>
+                        <Alert variant="danger">
+                            <Alert.Heading className="mb-0">
+                                🔥 Awas!!
+                            </Alert.Heading>
+                            <hr></hr>
+                            <p className="mt-0">
+                            <ol>
+                                <li>Mengubah/Edit "username" pada tabel berdampak pada pesan </li>
+                            </ol>
+                            </p>
                         </Alert>
-                    <Alert variant="danger">
-                        <Alert.Heading className="mb-0">
-                            🔥 Awas!!
-                        </Alert.Heading>
-                        <hr></hr>
-                        <p className="mt-0">
-                        <ol>
-                            <li>Mengubah/Edit "username" pada tabel berdampak pada pesan </li>
-                        </ol>
-                        </p>
-                    </Alert>
-                </Modal.Body>
-                <br></br>
-                <Modal.Footer>
-                    <Button variant="success" onClick={handleClose4}>
-                        Saya Mengerti
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                    </Modal.Body>
+                    <br></br>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={handleClose4}>
+                            Saya Mengerti
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </ModalDialog>
-
-
-
-            {/* <Row>
-                <Col className="bg-light pt-3 mb-1" >
-                    <p className="text-start fs-3 fw-2" > users </p>
-                </Col>
-            </Row> */}
             
             <Navbar>
                 <Container className="mx-4 my-10">
@@ -759,12 +784,8 @@ export default function Users(props) {
                                         <th>No.</th>
                                         <th>Nama </th>
                                         <th>Username</th>
-                                        <th>Angkatan</th>
-                                        <th>Konsentrasi</th>
-                                        <th>Kategori</th>
-                                        <th>Judul Penelitian</th>
                                         <th>Status pengguna</th>
-                                        <th>Status Laporan</th>
+                                        <th>Level pengguna</th>
                                         <th>Opsi</th>
 
                                     </tr>
@@ -781,12 +802,8 @@ export default function Users(props) {
                                                     <td>{user.id}</td>
                                                     <td>{user.fullname}</td>
                                                     <td>{user.username}</td>
-                                                    <td>{user.angkatan}</td>
-                                                    <td>{user.konsentrasi}</td>
-                                                    <td>{user.cat}</td>
-                                                    <td>{user.judul_penelitian}</td>
                                                     <td>{user.is_active ? "aktif" : "non-aktif"}</td>
-                                                    <td>{user.status}</td>
+                                                    <td>{user.policy}</td>
                                                     <td>
                                                         <Stack direction="horizontal" gap={3}  >
                                                             <Button variant="primary" onClick={

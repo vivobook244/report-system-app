@@ -3,9 +3,7 @@ import { Container, Row, Col, Table, Card, Button, Stack, ListGroup, Tab, Collap
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import navigation_administrator from "../../routers/navigation_administrator";
-// import styles from '../../assets/style/styles.module.css';
-// import Sidabar from "../../assets/component/sidebar";
-// import { checkSession } from "../../routes/checkAuth";
+
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import { retrieveData } from '../../localStorage'
