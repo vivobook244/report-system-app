@@ -201,7 +201,7 @@ export default function Mahasiswa(props) {
     const getUser = () => {
 
         const userToken = retrieveData("TOKEN")
-        api.get("/get-data-users-web",
+        api.get("/get-data-mahasiswa-web",
             {
                 headers: {
                     'x-auth-token': userToken

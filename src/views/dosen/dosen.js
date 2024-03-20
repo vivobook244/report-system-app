@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Table, Card, Button, Stack, ListGroup, Tab, Collapse, Modal, Form, ModalBody, ModalDialog, Alert, Navbar } from "react-bootstrap";
+import { Container, Row, Col, Table, Button, Stack, ListGroup, Collapse, Modal, Form, ModalDialog, Alert, Navbar } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import navigation_administrator from "../../routers/navigation_administrator";
@@ -86,6 +86,7 @@ export default function Dosen(props) {
                 fullname: fullname,
                 konsentrasi: konsentrasi,
                 kuota: quota,
+                sisa_kuota:quota,
                 is_active: true,
                 is_remove: false
             },
@@ -128,9 +129,9 @@ export default function Dosen(props) {
     };
 
 
-    const deleteUser = (idUser) => {
+    const deleteDosen = (idUser) => {
         const userToken = retrieveData("TOKEN")
-        api.post("/delete-data-users-web",
+        api.post("/delete-data-dosen-web",
             {
                 id: idUser,
 
@@ -194,48 +195,70 @@ export default function Dosen(props) {
 
     }
 
-    const updateUsers = () => {
+    const updateDosen = () => {
         setLoading(true)
 
         const userToken = retrieveData("TOKEN")
 
         // return console.log(username, password, fullname, angkatan,konsentrasi ,policy, cat, status)
+        var used_quota = dosen[0].kuota - dosen[0].sisa_kuota;
+        var edit = false
 
-        api.post("/changed-data-user-web",
-            {
-                id: chooseid2.id,
-                fullname: fullname,
-                konsentrasi: konsentrasi,
-            },
-            {
-                headers: {
-                    'x-auth-token': userToken
+        
+
+        if( dosen[0].kuota > quota ){
+            var diferent_quota = dosen[0].kuota - quota;
+            var new_sisa_kuota = dosen[0].sisa_kuota - diferent_quota
+            if(new_sisa_kuota => 0 ){
+                edit = true;
+            } else if(new_sisa_kuota < 0 ){
+                edit = false;
+            }
+        }else if ( (dosen[0].kuota < quota) || (dosen[0].kuota === quota) ) {
+            edit = true;
+        } 
+        if ( edit === true ) {
+            api.post("/update-data-dosen-web",
+                {
+                    id: chooseid2.id,
+                    fullname: fullname,
+                    konsentrasi: konsentrasi,
+                    kuota: quota,
                 },
-            }).then(res => {
-                console.log(res.data)
-                if (res.data.Code === 401) {
-                    setShowModal(true)
-                    setErrorMessage(res.data.message)
+                {
+                    headers: {
+                        'x-auth-token': userToken
+                    },
+                }).then(res => {
+                    console.log(res.data)
+                    if (res.data.Code === 401) {
+                        setShowModal(true)
+                        setErrorMessage(res.data.message)
+                        setLoading(false)
+                        handleClose3()
+                        
+                    } else if (res.data.Code === 201) {
+                        setLoading(false)
+                        setShowModal(true)
+                        setErrorMessage(res.data.message)
+                        handleClose3()
+                        
+    
+                    }
+                }).catch(error => {
                     setLoading(false)
-                    handleClose3()
-                    
-                } else if (res.data.Code === 201) {
-                    setLoading(false)
+                    console.log(error)
+                    console.log("error sign in")
                     setShowModal(true)
-                    setErrorMessage(res.data.message)
-                    handleClose3()
+                    setErrorMessage(error.code)
                     
+    
+                })
+        } else {
+            setShowModal(true)
+            setErrorMessage("Edit quota tidak dapat dilakukan, perhatikan angka yang anda masukan")
+        }
 
-                }
-            }).catch(error => {
-                setLoading(false)
-                console.log(error)
-                console.log("error sign in")
-                setShowModal(true)
-                setErrorMessage(error.code)
-                
-
-            })
     }
 
 
@@ -270,6 +293,7 @@ export default function Dosen(props) {
 
                 setFullname(chooseid2.fullname)
                 setKonsentrasi(chooseid2.konsentrasi)
+                setQuota(chooseid2.kuota)
                 handleShow3()
 
             }
@@ -322,7 +346,7 @@ export default function Dosen(props) {
                                 <option value="-">Tidak Perlu (khusus koordinator)</option>
                             </Form.Select>
                         </Form.Group>
-                         <Form.Group className="mb-3" controlId="selectPolicyusers2">
+                        <Form.Group className="mb-3" controlId="selectPolicyusers2">
                             <Form.Label>Pilih Quota</Form.Label>
                             <Form.Select onChange={handleQuota} value={quota} aria-label="Default select example">
                                 <option>Quota</option>
@@ -384,6 +408,18 @@ export default function Dosen(props) {
                                 <option value="-">Tidak Perlu (khusus koordinator)</option>
                             </Form.Select>
                         </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="selectPolicyusers2">
+                            <Form.Label>Pilih Quota</Form.Label>
+                            <Form.Select onChange={handleQuota} value={quota} aria-label="Default select example">
+                                <option>Quota</option>
+                                <option value="2">2</option>
+                                <option value="4">4</option>
+                                <option value="8">8</option>
+                                <option value="10">10</option>
+                              
+                            </Form.Select>
+                        </Form.Group>
                         <Form.Label> ⬆️ | Setelah Data di ubah, Periksa data terlebih dahulu.</Form.Label>
                     </Form>
                 </Modal.Body>
@@ -397,7 +433,7 @@ export default function Dosen(props) {
                     <Button variant="primary"
                         onClick={
                             () => {
-                                updateUsers()
+                                updateDosen()
                             }
                         }
                     >Save</Button>
@@ -543,6 +579,24 @@ export default function Dosen(props) {
                                                     <td>{item.fullname}</td>
                                                     <td>{item.konsentrasi}</td>
                                                     <td>{item.kuota}</td>
+                                                    <td>{item.sisa_kuota}</td>
+                                                    <td>
+                                                        <Stack direction="horizontal" gap={3}  >
+                                                            <Button variant="primary" onClick={
+                                                                () => {
+                                                                    setChooseid2(item)
+
+                                                                }
+                                                            } >
+                                                                <span className="fs-6" >Edit</span>
+                                                            </Button>
+                                                            <Button variant="danger" onClick={() => {
+                                                                setChooseid(item)
+                                                            }} >
+                                                                 <span className="fs-6" >Hapus</span>
+                                                            </Button>
+                                                        </Stack>
+                                                    </td>
                                                 </tr>
                                             }
                                         )
@@ -567,7 +621,7 @@ export default function Dosen(props) {
                                                 >
                                                 Cancel 📘
                                             </Button>
-                                            <Button variant="danger" onClick={() => { deleteUser(chooseid.id) }}>
+                                            <Button variant="danger" onClick={() => { deleteDosen(chooseid.id) }}>
                                                 Delete 🗑️
                                             </Button>
                                         </Modal.Footer>
