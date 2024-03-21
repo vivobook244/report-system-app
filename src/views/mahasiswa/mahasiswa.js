@@ -337,102 +337,6 @@ export default function Mahasiswa(props) {
                 }}
                 message={errorMessage}
             />
-            {/* adding modal */}
-            <Modal
-                show={show}
-                onHide={handleClose}
-                backdrop="static"
-                keyboard={true}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>Menambahkan Mahasiswa Baru</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form id="create_user">
-                        <Form.Group className="mb-3" >
-                            <Form.Label>Fullname</Form.Label>
-                            <Form.Control onChange={handleFullname} value={fullname} type="text" placeholder="Fullname" />
-                        </Form.Group>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formGridEmail">
-                                <Form.Label>Username </Form.Label>
-                                <Form.Control onChange={handleUsername} value={username} type="text" placeholder="Username" />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control onChange={handlePassword} value={password} type="password" placeholder="Password" />
-                            </Form.Group>
-                        </Row>
-                        <Form.Group className="mb-3" controlId="formGridAddress2">
-                            <Form.Label>Pilih Tahun Angkatan</Form.Label>
-                            {/* <Form.Control onChange={handleAngkatan} value={angkatan} type="text" placeholder="Angkatan" /> */}
-                            <Form.Select onChange={handleAngkatan} value={angkatan} aria-label="Default select example">
-                                <option>Angkatan</option>
-                                <option value="-" >Tidak Perlu (khusus koordinator)</option>
-                                <option value="2015" >2015</option>
-                                <option value="2016" >2016</option>
-                                <option value="2017" >2017</option>
-                                <option value="2018" >2018</option>
-                                <option value="2019" >2019</option>
-                                <option value="2020" >2020</option>
-                                <option value="2021" >2021</option>
-                                <option value="2022" >2022</option>
-                                <option value="2023" >2023</option>
-                                <option value="2024" >2024</option>
-                                <option value="2025" >2025</option>
-                                <option value="2026" >2026</option>
-                            </Form.Select>
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="selectPolicyusers2">
-                            <Form.Label>Pilih Konsentrasi</Form.Label>
-                            <Form.Select onChange={handleKonsentrasi} value={konsentrasi} aria-label="Default select example">
-                                <option>Konsentrasi</option>
-                                <option value="Energi">Energi</option>
-                                <option value="Elektronika instrumentasi">Elektronika instrumentasi</option>
-                                <option value="Telekomunikasi">Telekomunikasi</option>
-                                <option value="Komputer">Komputer</option>
-                                <option value="-">Tidak Perlu (khusus koordinator)</option>
-                            </Form.Select>
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="selectPolicyusers3">
-                            <Form.Label>Pilih Katogori</Form.Label>
-                            <Form.Select onChange={handleCat} value={cat} aria-label="Default select example">
-                                <option>Kategori</option>
-                                <option value="Kerja praktek">Kerja Praktek</option>
-                                <option value="Proyek mini">Proyek mini</option>
-                                <option value="-">Tidak Perlu (khusus koordinator)</option>
-                            </Form.Select>
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="selectPolicyusers4">
-                            <Form.Label>Pilih Status Laporan</Form.Label>
-                            <Form.Select onChange={handleStatus} value={status} aria-label="Default select example">
-                                <option>Status Laporan</option>
-                                <option value="Proses Revisi">Masih Dalam Proses Revisi</option>
-                                <option value="Lulus Bersyarat">Laporan Selesai Bersyarat</option>
-                                <option value="Selesai">Laporan Selesai</option>
-                                <option value="-">Tidak Perlu (khusus koordinator)</option>
-                            </Form.Select>
-                        </Form.Group>
-                        <Form.Label> ⚠️ | Catatan Penting : Pastikan Semua Data Terisi !</Form.Label>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="danger" onClick={handleClose}>
-                        Cancel
-                    </Button>
-                    <Button variant="primary"
-                        onClick={
-                            () => {
-                                handleButtonSave()
-                            }
-                        }
-
-                    >Save</Button>
-                </Modal.Footer>
-            </Modal>
 
             {/* edit modal */}
             <Modal
@@ -441,8 +345,6 @@ export default function Mahasiswa(props) {
                     handleClose3()
                     setChooseid2("")
                     setFullname("")
-                    setUsername("")
-                    setPassword("")
                     setAngkatan("")
                     setKonsentrasi("")
                     setCat("")
@@ -452,7 +354,7 @@ export default function Mahasiswa(props) {
                 keyboard={true}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Editing User</Modal.Title>
+                    <Modal.Title>Editing Mahasiswa</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form id="update_user">
@@ -460,17 +362,6 @@ export default function Mahasiswa(props) {
                             <Form.Label>Fullname</Form.Label>
                             <Form.Control onChange={handleFullname} value={fullname} type="text" placeholder="Fullname" />
                         </Form.Group>
-                        <Row className="mb-3">
-                            <Form.Group as={Col} controlId="formGridEmail">
-                                <Form.Label>Username</Form.Label>
-                                <Form.Control onChange={handleUsername} value={username} type="text" placeholder="Username" />
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formGridPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control onChange={handlePassword} value={password} type="password" placeholder="Password" />
-                            </Form.Group>
-                        </Row>
                         <Form.Group className="mb-3" controlId="formGridAddress2">
                             <Form.Label>Angkatan</Form.Label>
                             {/* <Form.Control onChange={handleAngkatan} value={angkatan} type="text" placeholder="Angkatan" /> */}
@@ -491,6 +382,7 @@ export default function Mahasiswa(props) {
                                 <option value="2026" >2026</option>
                             </Form.Select>
                         </Form.Group>
+
                         <Form.Group className="mb-3" controlId="selectPolicyusers2">
                             <Form.Label>Konsentrasi</Form.Label>
                             <Form.Select onChange={handleKonsentrasi} defaultValue={konsentrasi} aria-label="Default select example">
@@ -523,7 +415,9 @@ export default function Mahasiswa(props) {
                                 <option value="-">Tidak Perlu (khusus koordinator)</option>
                             </Form.Select>
                         </Form.Group>
+                        
                         <Form.Label> ⬆️ | Setelah Data di ubah, Periksa data terlebih dahulu.</Form.Label>
+                    
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -544,49 +438,48 @@ export default function Mahasiswa(props) {
             </Modal>
 
             {/* Panduan dalam mengisi table */}
-            <ModalDialog>
-            
-            {/* adding modal */}
-            <Modal
-                show={show4}
-                onHide={handleClose4}
-                backdrop="static"
-                keyboard={true}
-            >
-                <Modal.Header >
-                    <Modal.Title>Panduan Tabel 💡</Modal.Title>
-                </Modal.Header>
+            <ModalDialog>          
+                {/* adding modal */}
+                <Modal
+                    show={show4}
+                    onHide={handleClose4}
+                    backdrop="static"
+                    keyboard={true}
+                >
+                    <Modal.Header >
+                        <Modal.Title>Panduan Tabel 💡</Modal.Title>
+                    </Modal.Header>
 
-                <Modal.Body>
-                    <Form id="panduan_user"></Form>
-                    <Alert variant="success">
-                        <Alert.Heading>
-                        🏆 Aturan Tabel 
-                        </Alert.Heading>
-                        <hr></hr>
-                        <ol>
-                            <li></li>
-                        </ol>
+                    <Modal.Body>
+                        <Form id="panduan_user"></Form>
+                        <Alert variant="success">
+                            <Alert.Heading>
+                            🏆 Aturan Tabel 
+                            </Alert.Heading>
+                            <hr></hr>
+                            <ol>
+                                <li></li>
+                            </ol>
+                            </Alert>
+                        <Alert variant="danger">
+                            <Alert.Heading className="mb-0">
+                                🔥 Awas!!
+                            </Alert.Heading>
+                            <hr></hr>
+                            <p className="mt-0">
+                            <ol>
+                                <li>Mengubah/Edit "username" pada tabel berdampak pada pesan </li>
+                            </ol>
+                            </p>
                         </Alert>
-                    <Alert variant="danger">
-                        <Alert.Heading className="mb-0">
-                            🔥 Awas!!
-                        </Alert.Heading>
-                        <hr></hr>
-                        <p className="mt-0">
-                        <ol>
-                            <li>Mengubah/Edit "username" pada tabel berdampak pada pesan </li>
-                        </ol>
-                        </p>
-                    </Alert>
-                </Modal.Body>
-                <br></br>
-                <Modal.Footer>
-                    <Button variant="success" onClick={handleClose4}>
-                        Saya Mengerti
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                    </Modal.Body>
+                    <br></br>
+                    <Modal.Footer>
+                        <Button variant="success" onClick={handleClose4}>
+                            Saya Mengerti
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </ModalDialog>
 
 
@@ -664,14 +557,10 @@ export default function Mahasiswa(props) {
                 
                         }
 
-                        >
-                            <Button  className="btn btn-primary" onClick={handleShow} >
-                                Tambah Mahasiswa 
-                            </Button>
-                            
+                        >   
                             <Button className="btn btn-warning mx-4" onClick={handleShow4}>
                                 Panduan Tabel 
-                                </Button>
+                            </Button>
                             <Table striped bordered hover className="mt-4" >
                                 <thead>
                                     <tr>
@@ -682,6 +571,7 @@ export default function Mahasiswa(props) {
                                         <th>Konsentrasi</th>
                                         <th>Kategori</th>
                                         <th>Judul Penelitian</th>
+                                        <th>Dosen Pembimbing</th>
                                         <th>Status pengguna</th>
                                         <th>Status Laporan</th>
                                         <th>Opsi</th>
@@ -704,6 +594,7 @@ export default function Mahasiswa(props) {
                                                     <td>{user.konsentrasi}</td>
                                                     <td>{user.cat}</td>
                                                     <td>{user.judul_penelitian}</td>
+                                                    <td>{user.dosen_pembimbing}</td>
                                                     <td>{user.is_active ? "aktif" : "non-aktif"}</td>
                                                     <td>{user.status}</td>
                                                     <td>

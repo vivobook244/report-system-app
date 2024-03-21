@@ -16,6 +16,8 @@ export default function RegisterStudents(props) {
     const [konsentrasi, setKonsentrasi] = useState("");
     const [cat, setCat] = useState("");
     const [judul, setJudul] = useState("");
+    const [dosbing, setDosbing] = useState("N/A");
+    const [listDosen, setListdosen] = useState([]);
 
     const handleClose = () => {
         setShowModal(false)
@@ -36,6 +38,7 @@ export default function RegisterStudents(props) {
                 policy: "mahasiswa",
                 cat: cat,
                 judul_penelitian: judul,
+                dosen_pembimbing: dosbing,
                 status: "N/A",
                 is_active: false,
                 is_remove: false
@@ -66,6 +69,21 @@ export default function RegisterStudents(props) {
         })
     };
 
+    const retrive_dosen = () => {
+        api.get(`/dosen-web-for-register/${konsentrasi}`,
+            {},
+        ).then(res => {
+            if (res.data.Code === 201) {
+                setListdosen(res.data.message)
+            }
+            if (res.data.Code === 400) {
+                setListdosen([])
+            }
+        }).catch(error => {
+           console.log(error)
+        })
+    };
+
     const handleUsername = (event) => {
         event.persist();
         let value = event.target.value
@@ -77,7 +95,6 @@ export default function RegisterStudents(props) {
         let value = event.target.value
         setPassword(value);
     }
-
 
     const handleFullname = (event) => {
         event.persist();
@@ -109,6 +126,12 @@ export default function RegisterStudents(props) {
         setJudul(value);
     }
 
+    const handleDosbing = (event) => {
+        event.persist();
+        let value = event.target.value
+        setDosbing(value);
+    }
+
     const handleReset = () => {
         setUsername("");
         setPassword("");
@@ -118,6 +141,17 @@ export default function RegisterStudents(props) {
         setCat("");
         setJudul("");
     }
+
+    useEffect(
+        ()=>{
+            if (cat === "Proyek mini") {
+                retrive_dosen()
+            }else if(cat !== "Proyek mini"){
+                setDosbing("N/A")
+            }    
+        
+        },[cat, konsentrasi]
+    )
 
 
 
@@ -130,7 +164,6 @@ export default function RegisterStudents(props) {
                 message={errorMessage}
 
             />
-
             <Row className="justify-content-center align-items-center">
                 <Col xl={3} lg={4} md={6} sm={10} >
                     <div className={styles.BoxRegister} >
@@ -193,6 +226,28 @@ export default function RegisterStudents(props) {
                                 <Form.Label>Judul Kerja Praktek/Proyek Mini</Form.Label>
                                 <Form.Control value={judul} onChange={handleJudul} as="textarea" rows={2} />
                             </Form.Group>
+
+                            {
+                                cat === "Proyek mini" ?
+                                    <Form.Group className="mb-3" controlId="selectPolicyusers3">
+                                        <Form.Label>Pilih Dosen Pembimbing</Form.Label>
+                                        <Form.Select onChange={handleDosbing} value={dosbing} aria-label="Default select example">
+                                            <option>Dosen Pembimbing</option>
+                                            {
+                                                listDosen.length !== 0 ? 
+                                                    listDosen.map(
+                                                        (item, index)=> <option key={index} value={item.id} >{item.fullname}</option>
+                                                    )
+                                                :
+
+                                                <></>
+                                            }
+                                        </Form.Select>
+                                    </Form.Group>
+                                    :
+                                    <></>
+                            }
+
                             <Button
                                 href="#" className={styles.tombolLogin}
                                 disabled={isLoading}

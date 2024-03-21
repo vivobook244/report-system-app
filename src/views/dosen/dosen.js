@@ -217,6 +217,8 @@ export default function Dosen(props) {
         }else if ( (dosen[0].kuota < quota) || (dosen[0].kuota === quota) ) {
             edit = true;
         } 
+
+        
         if ( edit === true ) {
             api.post("/update-data-dosen-web",
                 {
