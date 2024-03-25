@@ -9,6 +9,7 @@ export default function RegisterStudents(props) {
     const [isLoading, setLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [fullname, setFullname] = useState("");
@@ -236,7 +237,7 @@ export default function RegisterStudents(props) {
                                             {
                                                 listDosen.length !== 0 ? 
                                                     listDosen.map(
-                                                        (item, index)=> <option key={index} value={item.id} >{item.fullname}</option>
+                                                        (item, index)=> <option key={index} value={item.id_dosen} >{item.fullname_dosen}</option>
                                                     )
                                                 :
 

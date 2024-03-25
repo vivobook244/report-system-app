@@ -293,7 +293,7 @@ export default function Dosen(props) {
 
             if (chooseid2 !== "") {
 
-                setFullname(chooseid2.fullname)
+                setFullname(chooseid2.fullname_dosen)
                 setKonsentrasi(chooseid2.konsentrasi)
                 setQuota(chooseid2.kuota)
                 handleShow3()
@@ -577,8 +577,8 @@ export default function Dosen(props) {
                                         dosen.map(
                                             (item, index) => {
                                                 return <tr key={index} >
-                                                    <td>{item.id}</td>
-                                                    <td>{item.fullname}</td>
+                                                    <td>{item.id_dosen}</td>
+                                                    <td>{item.fullname_dosen}</td>
                                                     <td>{item.konsentrasi}</td>
                                                     <td>{item.kuota}</td>
                                                     <td>{item.sisa_kuota}</td>
@@ -623,7 +623,7 @@ export default function Dosen(props) {
                                                 >
                                                 Cancel 📘
                                             </Button>
-                                            <Button variant="danger" onClick={() => { deleteDosen(chooseid.id) }}>
+                                            <Button variant="danger" onClick={() => { deleteDosen(chooseid.id_dosen) }}>
                                                 Delete 🗑️
                                             </Button>
                                         </Modal.Footer>

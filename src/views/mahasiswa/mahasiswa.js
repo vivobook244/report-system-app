@@ -24,7 +24,7 @@ export default function Mahasiswa(props) {
 
     // perencanaan panduan membuat user
     const [show4, setShow4] = useState(false);
-    
+
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -46,29 +46,32 @@ export default function Mahasiswa(props) {
     const [users, setUsers] = useState([])
     const [showModal, setShowModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+
+
     const [fullname, setFullname] = useState("");
     const [angkatan, setAngkatan] = useState("");
     const [konsentrasi, setKonsentrasi] = useState("");
     const [cat, setCat] = useState("");
+    const [judul, setJudul] = useState("");
+    const [dosbing, setDosbing] = useState("N/A");
+    const [listDosen, setListdosen] = useState([]);
     const [status, setStatus] = useState("");
 
 
     let redirect = useNavigate()
 
-    const handleUsername = (event) => {
+
+    const handleJudul = (event) => {
         event.persist();
         let value = event.target.value
-        setUsername(value);
+        setJudul(value);
     }
 
-    const handlePassword = (event) => {
+    const handleDosbing = (event) => {
         event.persist();
         let value = event.target.value
-        setPassword(value);
+        setDosbing(value);
     }
-
 
     const handleFullname = (event) => {
         event.persist();
@@ -99,66 +102,6 @@ export default function Mahasiswa(props) {
         let value = event.target.value
         setStatus(value);
     }
-
-
-    const handleButtonSave = () => {
-        setLoading(true)
-
-        const userToken = retrieveData("TOKEN")
-
-        // return console.log( username,password,fullname,angkatan,policy,cat,status ) 
-
-        api.post("/create-data-users-web",
-            {
-                fullname: fullname,
-                username: username,
-                password: password,
-                angkatan: angkatan,
-                konsentrasi: konsentrasi,
-                policy: "mahasiswa",
-                cat: cat,
-                status: status,
-                is_active: true,
-                is_remove: false
-            },
-            {
-                headers: {
-                    'x-auth-token': userToken
-                },
-            }
-        ).then(res => {
-            console.log(res.data)
-            if (res.data.Code === 401) {
-                setShowModal(true)
-                setErrorMessage(res.data.message)
-                setLoading(false)
-                
-            } else if (res.data.Code === 201) {
-                setLoading(false)
-                setShowModal(true)
-                setErrorMessage(res.data.message)
-                handleClose()
-                
-            }else if (res.data.Code === 409) {
-                setLoading(false)
-                setShowModal(true)
-                setErrorMessage(res.data.message)
-                handleClose()
-                
-            }
-        }).catch(error => {
-            setLoading(false)
-            console.log(error)
-            console.log("error sign in")
-            setShowModal(true)
-            setErrorMessage(error.code)
-            
-
-        })
-
-
-    };
-
 
     const deleteUser = (idUser) => {
         const userToken = retrieveData("TOKEN")
@@ -226,6 +169,21 @@ export default function Mahasiswa(props) {
 
     }
 
+    const retrive_dosen = () => {
+        api.get(`/dosen-web-for-register/${konsentrasi}`,
+            {},
+        ).then(res => {
+            if (res.data.Code === 201) {
+                setListdosen(res.data.message)
+            }
+            if (res.data.Code === 400) {
+                setListdosen([])
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    };
+
     const updateUsers = () => {
         setLoading(true)
 
@@ -237,8 +195,6 @@ export default function Mahasiswa(props) {
             {
                 id: chooseid2.id,
                 fullname: fullname,
-                username: username,
-                password: password,
                 angkatan: angkatan,
                 konsentrasi: konsentrasi,
                 cat: cat,
@@ -255,13 +211,13 @@ export default function Mahasiswa(props) {
                     setErrorMessage(res.data.message)
                     setLoading(false)
                     handleClose3()
-                    
+
                 } else if (res.data.Code === 201) {
                     setLoading(false)
                     setShowModal(true)
                     setErrorMessage(res.data.message)
                     handleClose3()
-                    
+
 
                 }
             }).catch(error => {
@@ -270,7 +226,7 @@ export default function Mahasiswa(props) {
                 console.log("error sign in")
                 setShowModal(true)
                 setErrorMessage(error.code)
-                
+
 
             })
     }
@@ -279,13 +235,14 @@ export default function Mahasiswa(props) {
     useEffect(
         () => {
             getUser()
+
             if (identity == null) {
                 redirect("../", { replace: true });
             }
             console.log(identity)
             let ident = JSON.parse(identity)
             console.log(ident.type)
-            if (ident.type == "koordinator" || ident.type == "administrator" ) {
+            if (ident.type == "koordinator" || ident.type == "administrator") {
                 setNav(navigation_administrator)
                 console.log(nav)
             }
@@ -306,22 +263,24 @@ export default function Mahasiswa(props) {
             if (chooseid2 !== "") {
 
                 setFullname(chooseid2.fullname)
-                setUsername(chooseid2.username)
-                setPassword(chooseid2.password)
                 setAngkatan(chooseid2.angkatan)
                 setKonsentrasi(chooseid2.konsentrasi)
                 setCat(chooseid2.cat)
+                setJudul(chooseid2.judul_penelitian)
+                setDosbing(chooseid2.id_dosen)
                 setStatus(chooseid2.status)
                 handleShow3()
+                retrive_dosen()
 
             }
-        }, [chooseid2]
+        }, [chooseid2, konsentrasi]
     )
 
     useEffect(
         () => {
             if (chooseid !== "") {
                 handleShow2()
+
 
             }
         }, [chooseid]
@@ -331,9 +290,9 @@ export default function Mahasiswa(props) {
         <Container fluid >
             <FailedAuthModal
                 show={showModal}
-                onHide={() =>{ 
-                    setShowModal(false) 
-                    document.location.reload() 
+                onHide={() => {
+                    setShowModal(false)
+                    document.location.reload()
                 }}
                 message={errorMessage}
             />
@@ -385,7 +344,7 @@ export default function Mahasiswa(props) {
 
                         <Form.Group className="mb-3" controlId="selectPolicyusers2">
                             <Form.Label>Konsentrasi</Form.Label>
-                            <Form.Select onChange={handleKonsentrasi} defaultValue={konsentrasi} aria-label="Default select example">
+                            <Form.Select disabled onChange={handleKonsentrasi} defaultValue={konsentrasi} aria-label="Default select example">
                                 <option value="N/A" >Konsentrasi</option>
                                 <option value="Energi">Energi</option>
                                 <option value="Elektronika instrumentasi">Elektronika instrumentasi</option>
@@ -405,6 +364,25 @@ export default function Mahasiswa(props) {
                             </Form.Select>
                         </Form.Group>
 
+                        <Form.Group className="mb-3">
+                            <Form.Label>Judul Kerja Praktek/Proyek Mini</Form.Label>
+                            <Form.Control value={judul} onChange={handleJudul} as="textarea" rows={2} />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="selectPolicyusers3">
+                            <Form.Label>Pilih Dosen Pembimbing</Form.Label>
+                            <Form.Select onChange={handleDosbing} value={dosbing} aria-label="Default select example">
+                                <option>Dosen Pembimbing</option>
+                                {
+                                    listDosen.length !== 0 ?
+                                        listDosen.map(
+                                            (item, index) => <option key={index} value={item.id_dosen} >{item.fullname_dosen}</option>
+                                        )
+                                        :
+                                        <></>
+                                }
+                            </Form.Select>
+                        </Form.Group>
+                       
                         <Form.Group className="mb-3" controlId="selectPolicyusers4">
                             <Form.Label>Pilih Status Laporan</Form.Label>
                             <Form.Select onChange={handleStatus} defaultValue={status} aria-label="Default select example">
@@ -415,9 +393,9 @@ export default function Mahasiswa(props) {
                                 <option value="-">Tidak Perlu (khusus koordinator)</option>
                             </Form.Select>
                         </Form.Group>
-                        
+
                         <Form.Label> ⬆️ | Setelah Data di ubah, Periksa data terlebih dahulu.</Form.Label>
-                    
+
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -438,7 +416,7 @@ export default function Mahasiswa(props) {
             </Modal>
 
             {/* Panduan dalam mengisi table */}
-            <ModalDialog>          
+            <ModalDialog>
                 {/* adding modal */}
                 <Modal
                     show={show4}
@@ -454,22 +432,22 @@ export default function Mahasiswa(props) {
                         <Form id="panduan_user"></Form>
                         <Alert variant="success">
                             <Alert.Heading>
-                            🏆 Aturan Tabel 
+                                🏆 Aturan Tabel
                             </Alert.Heading>
                             <hr></hr>
                             <ol>
                                 <li></li>
                             </ol>
-                            </Alert>
+                        </Alert>
                         <Alert variant="danger">
                             <Alert.Heading className="mb-0">
                                 🔥 Awas!!
                             </Alert.Heading>
                             <hr></hr>
                             <p className="mt-0">
-                            <ol>
-                                <li>Mengubah/Edit "username" pada tabel berdampak pada pesan </li>
-                            </ol>
+                                <ol>
+                                    <li>Mengubah/Edit "username" pada tabel berdampak pada pesan </li>
+                                </ol>
                             </p>
                         </Alert>
                     </Modal.Body>
@@ -489,7 +467,7 @@ export default function Mahasiswa(props) {
                     <p className="text-start fs-3 fw-2" > users </p>
                 </Col>
             </Row> */}
-            
+
             <Navbar>
                 <Container className="mx-4 my-10">
                     <Navbar.Brand className="fs-2 fw-semibold">
@@ -549,17 +527,17 @@ export default function Mahasiswa(props) {
                                 width: window.innerWidth - 200,
                                 // minHeight: ,
                                 height: window.innerHeight - 80,
-                                
-                            }
-                            
-                            
-                            
-                
-                        }
 
-                        >   
+                            }
+
+
+
+
+                            }
+
+                        >
                             <Button className="btn btn-warning mx-4" onClick={handleShow4}>
-                                Panduan Tabel 
+                                Panduan Tabel
                             </Button>
                             <Table striped bordered hover className="mt-4" >
                                 <thead>
@@ -594,7 +572,7 @@ export default function Mahasiswa(props) {
                                                     <td>{user.konsentrasi}</td>
                                                     <td>{user.cat}</td>
                                                     <td>{user.judul_penelitian}</td>
-                                                    <td>{user.dosen_pembimbing}</td>
+                                                    <td>{user.fullname_dosen}</td>
                                                     <td>{user.is_active ? "aktif" : "non-aktif"}</td>
                                                     <td>{user.status}</td>
                                                     <td>
@@ -603,6 +581,7 @@ export default function Mahasiswa(props) {
                                                                 () => {
                                                                     setChooseid2(user)
 
+
                                                                 }
                                                             } >
                                                                 <span className="fs-6" >Edit</span>
@@ -610,12 +589,12 @@ export default function Mahasiswa(props) {
                                                             <Button variant="danger" onClick={() => {
                                                                 setChooseid(user)
                                                             }} >
-                                                                 <span className="fs-6" >Hapus</span>
+                                                                <span className="fs-6" >Hapus</span>
                                                             </Button>
                                                             <Button variant={user.is_active ? "secondary" : "success"} onClick={() => {
-                                                                
+
                                                             }} >
-                                                                 <span className="fs-6" >{user.is_active ? "non-aktifkan" : "aktifkan"}</span>
+                                                                <span className="fs-6" >{user.is_active ? "non-aktifkan" : "aktifkan"}</span>
                                                             </Button>
                                                         </Stack>
                                                     </td>
@@ -626,8 +605,8 @@ export default function Mahasiswa(props) {
                                     }
                                     {/* modal delete confirm */}
                                     <Modal show={show2} onHide={
-                                        () => { 
-                                            handleClose2() 
+                                        () => {
+                                            handleClose2()
                                         }
                                     } backdrop="static" >
                                         <Modal.Header closeButton>
@@ -640,8 +619,8 @@ export default function Mahasiswa(props) {
                                                     handleClose2()
                                                     setChooseid("")
                                                 }
-                                                }
-                                                >
+                                            }
+                                            >
                                                 Cancel 📘
                                             </Button>
                                             <Button variant="danger" onClick={() => { deleteUser(chooseid.id) }}>
