@@ -191,13 +191,15 @@ export default function Mahasiswa(props) {
 
         // return console.log(username, password, fullname, angkatan,konsentrasi ,policy, cat, status)
 
-        api.post("/changed-data-user-web",
+        api.post("/changed-data-mahasiswa-web",
             {
                 id: chooseid2.id,
                 fullname: fullname,
                 angkatan: angkatan,
                 konsentrasi: konsentrasi,
                 cat: cat,
+                judul_penelitian : judul,
+                id_dosen: dosbing ,
                 status: status
             },
             {
@@ -590,11 +592,6 @@ export default function Mahasiswa(props) {
                                                                 setChooseid(user)
                                                             }} >
                                                                 <span className="fs-6" >Hapus</span>
-                                                            </Button>
-                                                            <Button variant={user.is_active ? "secondary" : "success"} onClick={() => {
-
-                                                            }} >
-                                                                <span className="fs-6" >{user.is_active ? "non-aktifkan" : "aktifkan"}</span>
                                                             </Button>
                                                         </Stack>
                                                     </td>
