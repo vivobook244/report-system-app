@@ -587,58 +587,6 @@ export default function Users(props) {
                                 <option value={"koordinator"} >Koordinator</option>
                             </Form.Select>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formGridAddress2">
-                            <Form.Label>Angkatan</Form.Label>
-                            {/* <Form.Control onChange={handleAngkatan} value={angkatan} type="text" placeholder="Angkatan" /> */}
-                            <Form.Select onChange={handleAngkatan} value={angkatan} aria-label="Default select example">
-                                <option value="N/A" >Pilih Tahun Angkatan</option>
-                                <option value="-" >Tidak Perlu (khusus koordinator)</option>
-                                <option value="2015" >2015</option>
-                                <option value="2016" >2016</option>
-                                <option value="2017" >2017</option>
-                                <option value="2018" >2018</option>
-                                <option value="2019" >2019</option>
-                                <option value="2020" >2020</option>
-                                <option value="2021" >2021</option>
-                                <option value="2022" >2022</option>
-                                <option value="2023" >2023</option>
-                                <option value="2024" >2024</option>
-                                <option value="2025" >2025</option>
-                                <option value="2026" >2026</option>
-                            </Form.Select>
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="selectPolicyusers2">
-                            <Form.Label>Konsentrasi</Form.Label>
-                            <Form.Select onChange={handleKonsentrasi} defaultValue={konsentrasi} aria-label="Default select example">
-                                <option value="N/A" >Konsentrasi</option>
-                                <option value="Energi">Energi</option>
-                                <option value="Elektronika instrumentasi">Elektronika instrumentasi</option>
-                                <option value="Telekomunikasi">Telekomunikasi</option>
-                                <option value="Komputer">Komputer</option>
-                                <option value="-">Tidak Perlu (khusus koordinator)</option>
-                            </Form.Select>
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="selectPolicyusers3">
-                            <Form.Label>Kategori</Form.Label>
-                            <Form.Select onChange={handleCat} defaultValue={cat} aria-label="Default select example">
-                                <option value="N/A" >Kerja praktek/Proyek mini</option>
-                                <option value="Kerja praktek">Kerja Praktek</option>
-                                <option value="Proyek mini">Proyek mini</option>
-                                <option value="-">Tidak Perlu (khusus koordinator)</option>
-                            </Form.Select>
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="selectPolicyusers4">
-                            <Form.Label>Pilih Status Laporan</Form.Label>
-                            <Form.Select onChange={handleStatus} defaultValue={status} aria-label="Default select example">
-                                <option value="N/A" >Status Laporan</option>
-                                <option value="Proses Revisi">Masih Dalam Proses Revisi</option>
-                                <option value="Lulus Bersyarat">Laporan Selesai Bersyarat</option>
-                                <option value="Selesai">Laporan Selesai</option>
-                                <option value="-">Tidak Perlu (khusus koordinator)</option>
-                            </Form.Select>
-                        </Form.Group>
                         <Form.Label> ⬆️ | Setelah Data di ubah, Periksa data terlebih dahulu.</Form.Label>
                     </Form>
                 </Modal.Body>

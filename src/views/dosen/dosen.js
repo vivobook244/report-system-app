@@ -197,35 +197,39 @@ export default function Dosen(props) {
 
     const updateDosen = () => {
         setLoading(true)
-
         const userToken = retrieveData("TOKEN")
-
         // return console.log(username, password, fullname, angkatan,konsentrasi ,policy, cat, status)
-        var used_quota = dosen[0].kuota - dosen[0].sisa_kuota;
+        // var used_quota = dosen[0].kuota - dosen[0].sisa_kuota;
         var edit = false
+        var diferent_quota = 0
+        var new_sisa_kuota = 0
 
+
+        if( chooseid2.kuota > quota ){
+            diferent_quota = chooseid2.kuota - quota;
+            new_sisa_kuota = chooseid2.sisa_kuota - diferent_quota
         
-
-        if( dosen[0].kuota > quota ){
-            var diferent_quota = dosen[0].kuota - quota;
-            var new_sisa_kuota = dosen[0].sisa_kuota - diferent_quota
-            if(new_sisa_kuota => 0 ){
+            if(new_sisa_kuota >= 0 ){
                 edit = true;
-            } else if(new_sisa_kuota < 0 ){
+            }else if(new_sisa_kuota < 0 ){
                 edit = false;
             }
-        }else if ( (dosen[0].kuota < quota) || (dosen[0].kuota === quota) ) {
+        }else if ( (chooseid2.kuota < quota) || (chooseid2.kuota === quota) ) {
             edit = true;
+            diferent_quota = quota - chooseid2.kuota;
+            new_sisa_kuota = chooseid2.sisa_kuota + diferent_quota
+            
         } 
 
         
         if ( edit === true ) {
             api.post("/update-data-dosen-web",
                 {
-                    id: chooseid2.id,
+                    id: chooseid2.id_dosen,
                     fullname: fullname,
                     konsentrasi: konsentrasi,
                     kuota: quota,
+                    sisa_kuota: new_sisa_kuota
                 },
                 {
                     headers: {
@@ -292,7 +296,6 @@ export default function Dosen(props) {
 
 
             if (chooseid2 !== "") {
-
                 setFullname(chooseid2.fullname_dosen)
                 setKonsentrasi(chooseid2.konsentrasi)
                 setQuota(chooseid2.kuota)
@@ -305,7 +308,12 @@ export default function Dosen(props) {
     useEffect(
         () => {
             if (chooseid !== "") {
-                handleShow2()
+                if (chooseid.sisa_kuota !== chooseid.kuota) {
+                    setShowModal(true)
+                    setErrorMessage("Dosen tersebut masih memiliki mahasiswa bimbingan")
+                }else if(chooseid.sisa_kuota === chooseid.kuota){
+                    handleShow2()
+                }
 
             }
         }, [chooseid]
@@ -401,7 +409,7 @@ export default function Dosen(props) {
 
                         <Form.Group className="mb-3" controlId="selectPolicyusers2">
                             <Form.Label>Konsentrasi</Form.Label>
-                            <Form.Select onChange={handleKonsentrasi} defaultValue={konsentrasi} aria-label="Default select example">
+                            <Form.Select disabled onChange={handleKonsentrasi} defaultValue={konsentrasi} aria-label="Default select example">
                                 <option value="N/A" >Konsentrasi</option>
                                 <option value="Energi">Energi</option>
                                 <option value="Elektronika instrumentasi">Elektronika instrumentasi</option>
@@ -587,6 +595,7 @@ export default function Dosen(props) {
                                                             <Button variant="primary" onClick={
                                                                 () => {
                                                                     setChooseid2(item)
+                                                                
 
                                                                 }
                                                             } >

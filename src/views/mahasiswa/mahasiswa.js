@@ -105,7 +105,7 @@ export default function Mahasiswa(props) {
 
     const deleteUser = (idUser) => {
         const userToken = retrieveData("TOKEN")
-        api.post("/delete-data-users-web",
+        api.post("/delete-data-mahasiswa-web",
             {
                 id: idUser,
 
@@ -574,7 +574,7 @@ export default function Mahasiswa(props) {
                                                     <td>{user.konsentrasi}</td>
                                                     <td>{user.cat}</td>
                                                     <td>{user.judul_penelitian}</td>
-                                                    <td>{user.fullname_dosen}</td>
+                                                    <td>{typeof user.fullname_dosen !== "undefined" ? user.fullname_dosen : "N/A" }</td>
                                                     <td>{user.is_active ? "aktif" : "non-aktif"}</td>
                                                     <td>{user.status}</td>
                                                     <td>
